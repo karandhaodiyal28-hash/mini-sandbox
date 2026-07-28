@@ -1,0 +1,76 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <UseWPF>true</UseWPF>
+    <UseWindowsForms>false</UseWindowsForms>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <LangVersion>latest</LangVersion>
+    <AssemblyName>MiniSandbox</AssemblyName>
+    <RootNamespace>ZeroTrustSandbox</RootNamespace>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>Resources\appicon.ico</ApplicationIcon>
+    <Version>1.0.0</Version>
+    <Authors>Karan Dhaodiyal</Authors>
+    <Company>Karan Dhaodiyal</Company>
+    <Copyright>Copyright © 2026 Karan Dhaodiyal</Copyright>
+    <Product>Mini Sandbox</Product>
+    <Description>Mini Sandbox — free, lightweight, standalone isolated preview environment for untrusted URLs and files. Developed by Karan Dhaodiyal.</Description>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+
+    <!-- Analysis: enable .NET analyzers. Warnings-as-errors is opt-in via CI
+         (see build.yml) so day-to-day dev builds are not blocked. -->
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <AnalysisLevel>latest</AnalysisLevel>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+
+    <!-- Framework-dependent single file keeps the produced .exe well under 20MB.
+         Requires the .NET 8 Desktop Runtime + WebView2 Evergreen Runtime (both
+         built into / freely available for Win 10/11). -->
+    <SelfContained>false</SelfContained>
+    <PublishSingleFile>true</PublishSingleFile>
+    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+    <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- System.Net.Http is not part of the default implicit usings; add it
+         globally so the HttpClient-based intelligence clients resolve it. -->
+    <Using Include="System.Net.Http" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.2210.55" />
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="8.0.0" />
+    <PackageReference Include="System.Security.Cryptography.ProtectedData" Version="8.0.0" />
+    <PackageReference Include="SkiaSharp" Version="2.88.6" />
+    <PackageReference Include="SkiaSharp.NativeAssets.Win32" Version="2.88.6" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="ModernWpfUI" Version="0.9.6" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
+    <PackageReference Include="Serilog" Version="3.1.1" />
+    <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="5.0.0" />
+    <PackageReference Include="Serilog.Extensions.Hosting" Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- App logo shown in the About dialog / window chrome. -->
+    <Resource Include="Resources\appicon.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Resources\YaraRules\*.yar">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Resources\Blocklists\*.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

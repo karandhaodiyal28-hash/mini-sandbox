@@ -1,0 +1,37 @@
+## .NET / Visual Studio
+bin/
+obj/
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+## Build results
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+publish/
+dist/
+publish_dir/
+*.dll
+*.pdb
+
+## Rider
+.idea/
+
+## App runtime data (should never be committed)
+*.db
+*.db-shm
+*.db-wal
+user_key.dat
+settings.json
+
+## Logs
+logs/
+*.log
+
+## OS
+Thumbs.db
+.DS_Store

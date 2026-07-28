@@ -1,0 +1,56 @@
+name: build
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build-and-test:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET 8
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restore
+        run: dotnet restore ZeroTrustSandbox.sln
+
+      # Analyzers are enabled in the project; warnings are surfaced in the log.
+      # We do not fail the build on analyzer warnings to keep CI stable across
+      # analyzer-version bumps. Flip to `-warnaserror` once the baseline is clean.
+      - name: Build (Release)
+        run: dotnet build ZeroTrustSandbox.sln --configuration Release --no-restore
+
+      - name: Test (with coverage)
+        run: dotnet test ZeroTrustSandbox.sln --configuration Release --no-build --collect:"XPlat Code Coverage" --logger trx
+
+      - name: Publish single-file exe
+        run: >
+          dotnet publish ZeroTrustSandbox/ZeroTrustSandbox.csproj
+          --configuration Release
+          -r win-x64
+          --self-contained false
+          -p:PublishSingleFile=true
+          -o publish
+
+      - name: Report exe size
+        shell: pwsh
+        run: |
+          $exe = Get-Item publish/MiniSandbox.exe
+          $mb = [math]::Round($exe.Length / 1MB, 2)
+          Write-Host "MiniSandbox.exe = $mb MB"
+          if ($mb -ge 20) { Write-Error "Executable exceeds the 20MB budget ($mb MB)." }
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: MiniSandbox-win-x64
+          path: publish/MiniSandbox.exe
