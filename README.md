@@ -2,6 +2,12 @@
 
 > **Developed by Karan Dhaodiyal**
 
+<p align="center">
+  <a href="https://github.com/karandhaodiyal28-hash/mini-sandbox">
+    <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=600&size=24&pause=1000&color=00D4AA&center=true&vCenter=true&width=680&height=60&lines=Mini+Sandbox;Open+untrusted+URLs+and+files+safely;Preview+phishing+and+malware+in+isolation;RAM-only%2C+No+VM%2C+No+Docker%2C+100%25+Free" alt="Mini Sandbox — typing banner" />
+  </a>
+</p>
+
 <p align="left">
   <img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-green.svg">
   <img alt="Platform" src="https://img.shields.io/badge/platform-Windows%2010%2F11%20x64-0078D6?logo=windows&logoColor=white">
